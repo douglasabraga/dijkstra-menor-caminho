@@ -4,6 +4,7 @@
 
 int qntdNodo = 0;
 int **graph;
+char **vetorNomes;
 
 int** alocarMatriz(int Linhas, int Colunas);
 void lerArquivo(int op);
@@ -57,6 +58,7 @@ void lerArquivo(int op){
 			}
 			
 		}else{
+			//fgets(linha, sizeof(linha)-1, arq); // Loop para ler cada linha do arquivo enquanto houver linhas
 			fgets(linha, sizeof(linha)-1, arq); // Loop para ler cada linha do arquivo enquanto houver linhas
 			contaNodos(linha);
 		}
@@ -69,7 +71,7 @@ void separarDadosDaLinha(char linha[50], int contLinhas){
 	char delimitador[] = ";"; // Caracter delimitador
 	
     char *info; // Ponteiro para armazenar as informacoes
-
+	printf("-> %s", linha);
 	int peso;
 
 	int contColunas = 0;
@@ -92,15 +94,40 @@ void separarDadosDaLinha(char linha[50], int contLinhas){
 int contaNodos(char linha[50]){
 	char delimitador[] = ";"; // Caracter delimitador
     char *info; // Ponteiro para armazenar as informacoes
+    int c = 0;
+    char nome[50];
+    strcpy(nome, linha);
+	
+	
 	
 	info = strtok(linha, delimitador); // info recebe a primeira string antes do primeiro delimitador da primeira linha
-
+	
 	while(info != NULL) { // Enquanto houver linhas no arquivo
 		//printf("%d\n", atoi(info));
 		info = strtok(NULL, delimitador); // Separa o nome da linha
 
 		qntdNodo++;
 	}
+	
+	
+	
+	vetorNomes = (char **) malloc( qntdNodo * sizeof( char * ) );
+
+	info = strtok(nome, delimitador);
+	
+	for(c = 0; c < qntdNodo; c++){ //Loop para percorrer todos os índices do seu "vetor"
+		
+    	vetorNomes[c] = strdup(info);
+    	info = strtok(NULL, delimitador);
+	}
+	
+	for( c = 0; c < qntdNodo ; c++ )
+{
+ printf( "Elemento: %d - Conteúdo: %s\n", c, vetorNomes[c] );
+}
+
+
+	
 }
 
 void menu(){
