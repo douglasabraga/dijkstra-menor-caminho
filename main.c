@@ -1,175 +1,111 @@
+#include "djikstra.h"
 
-// Programa C para o single de Dijkstra
-// algoritmo de caminho mais curto de origem.
-// O programa é para matriz de adjacência
-// representação do gráfico.
-#include <stdio.h> 
-#include <limits.h>
-#include <stdbool.h>
-  
+int qntdNodo  = 0;
+int **graph;
 
-// Número de vértices
-// no gráfico
-#define V 6
+int** alocarMatriz(int Linhas, int Colunas);
+void lerArquivo(int op);
+void separarDadosDaLinha(char linha[50], int contLinhas);	
+int contaNodos(char linha[50]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-// Uma função utilitária para encontrar o
-// vértice com distância mínima
-// value, do conjunto de vértices
-// ainda não incluído no menor
-// árvore do caminho
-int minDistance(int dist[], bool sptSet[]){
-// Inicializa o valor mínimo 
-    int min = INT_MAX, min_index; 
-  	int v;
-    for (v = 0; v < V; v++) 
-        if (sptSet[v] == false && 
-                   dist[v] <= min) 
-            min = dist[v], min_index = v; 
-  
-    return min_index; 
-} 
-  
-
-// Função para imprimir mais curta
-// caminho da origem para j
-// usando matriz pai
-void printPath(int parent[], int j) { 
-	// Caso base: se j é fonte
-    if (parent[j] == - 1) 
-        return; 
-  
-    printPath(parent, parent[j]); 
-  
-    printf("%d ", j); 
-} 
-  
-
-// Uma função utilitária para imprimir
-// a distância construída
-// array 
-int printSolution(int dist[], int n, int parent[], int destino, int src) { 
-    //int src = 0; 
-    printf("Vertex\t Distance\tPath"); 
-    
-    //for (destino = 1; destino < V; destino++) 
-    //{ 
-        printf("\n%d -> %d \t\t %d\t\t%d ", 
-                      src, destino, dist[destino], src); 
-        printPath(parent, destino); 
-    //} 
-} 
-  
-// Função que implementa o Dijkstra
-// caminho mais curto da fonte única
-// algoritmo para um gráfico representado
-// usando representação da matriz de adjacência 
-void dijkstra(int graph[V][V], int src, int destino) { 
-      
-	// A matriz de saída. dist [i]
-    // manterá o menor tempo
-    // distância entre src e i
-    int dist[V];  
-    
-	// sptSet [i] será verdadeiro se o vértice
-    // i está incluído / no mais curto
-    // árvore do caminho ou distância mais curta
-    // de src para i é finalizado
-    bool sptSet[V]; 
-    
-	// Matriz pai a ser armazenada
-    // árvore do caminho mais curto
-    int parent[V]; 
-    
-	// Inicialize todas as distâncias como
-    // INFINITE e stpSet [] como false
-    int i;
-    for (i = 0; i < V; i++) 
-    { 
-        parent[i] = -1; 
-        dist[i] = INT_MAX; 
-        sptSet[i] = false; 
-    } 
-  
-	// Distância do vértice de origem
-    // por si só é sempre 0
-    dist[src] = 0; 
-    
-	// Encontre o caminho mais curto
-    // para allvertices
-    int count;
-    for (count = 0; count < V - 1; count++) { 
-        // Escolha a distância mínima
-        // vértice do conjunto de
-        // vértices ainda não processados.
-        // u é sempre igual a src
-        // na primeira iteração.
-        int u = minDistance(dist, sptSet); 
-  
-		// Marcar o vértice escolhido
-        // como processado 
-        sptSet[u] = true; 
-        
-		// Atualiza o valor dist do
-        // vértices adjacentes do
-        // escolheu o vértice.
-        int v;
-        for (v = 0; v < V; v++) 
-  
-            
-			// Atualiza dist [v] somente se for
-            // não no sptSet, existe
-            // uma aresta de u a v, e
-            // peso total do caminho de
-            // src para v através de u é menor
-            // que o valor atual de
-            // dist [v]
-            if (!sptSet[v] && graph[u][v] && 
-                dist[u] + graph[u][v] < dist[v]) 
-            { 
-                parent[v] = u; 
-                dist[v] = dist[u] + graph[u][v]; 
-            }  
-    } 
-  
-    
-	// imprime o construído
-    // matriz de distância
-    printSolution(dist, V, parent, destino, src); 
-} 
-  
-
-// Código do Driver 
-int main() { 
-    
-	// Vamos criar o exemplo
-    // gráfico discutido acima
-    int graph[V][V] =  { 
+int main() {
+	// O 2 é passado como parâmetro para
+	// a contagem de nós
+	lerArquivo(2);
+	
+    graph = alocarMatriz(qntdNodo, qntdNodo);
+	
+	printf("-> %d\n\n", qntdNodo);
+	
+	lerArquivo(1);
+    /*int graph[V][V] =  { 
                         { 0, 2, 0, 0, 0, 0}, 
                         { 0, 0, 0, 0, 0, 0}, 
                         { 0, 3, 0, 0, 0, 0}, 
-                        { 2, 0, 2, 0, 0, 0}, 
-                        { 0, 0, 10, 5, 0, 4}, 
-                        { 5, 0, 0, 0, 0, 0}, 
+                        { 2, 0, 2, 0, 0, 0},
+                        { 0, 0, 10, 5, 0, 4},
+                        { 5, 0, 0, 0, 0, 0},
                         
-                    }; 
-  	//dijkstra(graph, V, 0, 4); 
+                    };*/
+
     dijkstra(graph, 5, 1); 
     return 0; 
 } 
+
+int** alocarMatriz(int Linhas, int Colunas){ //Recebe a quantidade de Linhas e Colunas como Parâmetro
+ 
+  int i,j; //Variáveis Auxiliares
+ 
+  int **m = (int**)malloc(Linhas * sizeof(int*)); //Aloca um Vetor de Ponteiros
+ 
+  for (i = 0; i < Linhas; i++){ //Percorre as linhas do Vetor de Ponteiros
+       m[i] = (int*) malloc(Colunas * sizeof(int)); //Aloca um Vetor de Inteiros para cada posição do Vetor de Ponteiros.
+       for (j = 0; j < Colunas; j++){ //Percorre o Vetor de Inteiros atual.
+            m[i][j] = 0; //Inicializa com 0.
+       }
+  }
+return m; //Retorna o Ponteiro para a Matriz Alocada
+}
+
+void lerArquivo(int op){
+	char linha[50]; // string armazenara a linha
+    FILE *arq;
+	int contLinhas = 0;
+    arq = fopen("ProblemaSlideCaminhoMínimo.csv","r"); // Abre o arquivo
+    if (arq == NULL){  // Se houve erro na abertura
+		printf("Problemas na abertura do arquivo\n");
+	}else{
+		if(op < 2){
+			
+			fgets(linha, sizeof(linha)-1, arq);
+			while(fgets(linha, sizeof(linha)-1, arq) != NULL) { // Loop para ler cada linha do arquivo enquanto houver linhas
+				separarDadosDaLinha(linha, contLinhas);
+				contLinhas++;
+			}
+			
+		}else{
+			fgets(linha, sizeof(linha)-1, arq); // Loop para ler cada linha do arquivo enquanto houver linhas
+			contaNodos(linha);
+		}
+	}
+    fclose(arq);
+}
+
+
+void separarDadosDaLinha(char linha[50], int contLinhas){
+	char delimitador[] = ";"; // Caracter delimitador
+	
+    char *info; // Ponteiro para armazenar as informacoes
+
+	int peso;
+
+	int contColunas = 0;
+	
+	info = strtok(linha, delimitador); // info recebe a primeira string antes do primeiro delimitador da primeira linha
+	while(contColunas < qntdNodo) { // Enquanto houver linhas no arquivo
+	//Ignorar primeira coluna
+
+		if(contColunas != 0){
+			info = strtok(NULL, delimitador);
+			peso = atoi(info); // Copia info para peso
+			graph[contLinhas][contColunas-1] = peso;
+			
+		}
+		contColunas++;
+	}
+}
+
+
+int contaNodos(char linha[50]){
+	char delimitador[] = ";"; // Caracter delimitador
+    char *info; // Ponteiro para armazenar as informacoes
+	
+	info = strtok(linha, delimitador); // info recebe a primeira string antes do primeiro delimitador da primeira linha
+
+	while(info != NULL) { // Enquanto houver linhas no arquivo
+		printf("%d\n", atoi(info));
+		info = strtok(NULL, delimitador); // Separa o nome da linha
+
+		qntdNodo++;
+	}
+}
