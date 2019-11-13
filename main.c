@@ -1,12 +1,16 @@
+
+
 #include "djikstra.h"
 
-int qntdNodo  = 0;
+int qntdNodo = 0;
 int **graph;
 
 int** alocarMatriz(int Linhas, int Colunas);
 void lerArquivo(int op);
 void separarDadosDaLinha(char linha[50], int contLinhas);	
 int contaNodos(char linha[50]);
+void menu();
+
 
 int main() {
 	// O 2 é passado como parâmetro para
@@ -15,20 +19,9 @@ int main() {
 	
     graph = alocarMatriz(qntdNodo, qntdNodo);
 	
-	printf("-> %d\n\n", qntdNodo);
-	
 	lerArquivo(1);
-    /*int graph[V][V] =  { 
-                        { 0, 2, 0, 0, 0, 0}, 
-                        { 0, 0, 0, 0, 0, 0}, 
-                        { 0, 3, 0, 0, 0, 0}, 
-                        { 2, 0, 2, 0, 0, 0},
-                        { 0, 0, 10, 5, 0, 4},
-                        { 5, 0, 0, 0, 0, 0},
-                        
-                    };*/
-
-    dijkstra(graph, 5, 1); 
+	menu();
+    
     return 0; 
 } 
 
@@ -103,9 +96,34 @@ int contaNodos(char linha[50]){
 	info = strtok(linha, delimitador); // info recebe a primeira string antes do primeiro delimitador da primeira linha
 
 	while(info != NULL) { // Enquanto houver linhas no arquivo
-		printf("%d\n", atoi(info));
+		//printf("%d\n", atoi(info));
 		info = strtok(NULL, delimitador); // Separa o nome da linha
 
 		qntdNodo++;
 	}
+}
+
+void menu(){
+	int no1, no2, no3, no4, distTotal = 0;
+	printf("Digite o primeiro no: ");
+	scanf("%d", &no1);
+	printf("Digite o segundo no: ");
+	scanf("%d", &no2);
+	printf("Digite o terceiro no: ");
+	scanf("%d", &no3);
+	printf("Digite o quarto no: ");
+	scanf("%d", &no4);
+	printf("\n\n==============================================");
+	
+	printf("\nVertices\tDistancia \tNos Visitados"); 
+	
+	distTotal += dijkstra(graph, no1, no2);
+	distTotal += dijkstra(graph, no2, no3);
+	distTotal += dijkstra(graph, no3, no4);
+	
+	printf("\n\n==============================================");
+	
+	printf("\nDistancia Total = %d", distTotal);
+	
+	printf("\n==============================================\n\n");
 }

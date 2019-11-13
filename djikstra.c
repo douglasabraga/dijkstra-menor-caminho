@@ -35,13 +35,13 @@ void printPath(int parent[], int j) {
 // array 
 int printSolution(int dist[], int n, int parent[], int destino, int src) { 
     //int src = 0; 
-    printf("Vertex\t Distance\tPath"); 
     
     //for (destino = 1; destino < V; destino++) 
     //{ 
         printf("\n%d -> %d \t\t %d\t\t%d ", 
                       src, destino, dist[destino], src); 
-        printPath(parent, destino); 
+        printPath(parent, destino);
+       // distTotal += dist[destino];
     //} 
 } 
   
@@ -49,7 +49,7 @@ int printSolution(int dist[], int n, int parent[], int destino, int src) {
 // caminho mais curto da fonte única
 // algoritmo para um gráfico representado
 // usando representação da matriz de adjacência 
-void dijkstra(int **graph, int src, int destino) { 
+int dijkstra(int **graph, int src, int destino) { 
       
 	// A matriz de saída. dist [i]
     // manterá o menor tempo
@@ -120,6 +120,8 @@ void dijkstra(int **graph, int src, int destino) {
     
 	// imprime o construído
     // matriz de distância
-    printSolution(dist, V, parent, destino, src); 
+    printSolution(dist, V, parent, destino, src);
+	
+	return dist[destino];
 } 
   
