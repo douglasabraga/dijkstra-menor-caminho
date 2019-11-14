@@ -1,12 +1,18 @@
+
+
 #include "djikstra.h"
 
-int qntdNodo  = 0;
+int qntdNodo = 0;
 int **graph;
+char **vetorNomes;
 
 int** alocarMatriz(int Linhas, int Colunas);
 void lerArquivo(int op);
 void separarDadosDaLinha(char linha[50], int contLinhas);	
 int contaNodos(char linha[50]);
+void menu();
+int pegarIndice(char palavra[100]);
+
 
 int main() {
 	// O 2 é passado como parâmetro para
@@ -15,20 +21,9 @@ int main() {
 	
     graph = alocarMatriz(qntdNodo, qntdNodo);
 	
-	printf("-> %d\n\n", qntdNodo);
-	
 	lerArquivo(1);
-    /*int graph[V][V] =  { 
-                        { 0, 2, 0, 0, 0, 0}, 
-                        { 0, 0, 0, 0, 0, 0}, 
-                        { 0, 3, 0, 0, 0, 0}, 
-                        { 2, 0, 2, 0, 0, 0},
-                        { 0, 0, 10, 5, 0, 4},
-                        { 5, 0, 0, 0, 0, 0},
-                        
-                    };*/
-
-    dijkstra(graph, 5, 1); 
+	menu();
+    
     return 0; 
 } 
 
@@ -64,6 +59,7 @@ void lerArquivo(int op){
 			}
 			
 		}else{
+			//fgets(linha, sizeof(linha)-1, arq); // Loop para ler cada linha do arquivo enquanto houver linhas
 			fgets(linha, sizeof(linha)-1, arq); // Loop para ler cada linha do arquivo enquanto houver linhas
 			contaNodos(linha);
 		}
@@ -76,7 +72,7 @@ void separarDadosDaLinha(char linha[50], int contLinhas){
 	char delimitador[] = ";"; // Caracter delimitador
 	
     char *info; // Ponteiro para armazenar as informacoes
-
+	printf("-> %s", linha);
 	int peso;
 
 	int contColunas = 0;
@@ -99,13 +95,82 @@ void separarDadosDaLinha(char linha[50], int contLinhas){
 int contaNodos(char linha[50]){
 	char delimitador[] = ";"; // Caracter delimitador
     char *info; // Ponteiro para armazenar as informacoes
+    int c = 0;
+    char nome[50];
+    strcpy(nome, linha);
+	
+	
 	
 	info = strtok(linha, delimitador); // info recebe a primeira string antes do primeiro delimitador da primeira linha
-
+	
 	while(info != NULL) { // Enquanto houver linhas no arquivo
-		printf("%d\n", atoi(info));
+		//printf("%d\n", atoi(info));
 		info = strtok(NULL, delimitador); // Separa o nome da linha
 
 		qntdNodo++;
+	}
+
+	vetorNomes = (char **) malloc( qntdNodo * sizeof( char * ) );
+
+	info = strtok(nome, delimitador);
+	
+	for(c = 0; c < qntdNodo; c++){ //Loop para percorrer todos os índices do seu "vetor"
+		
+    	vetorNomes[c] = strdup(info);
+    	info = strtok(NULL, delimitador);
+	}
+	
+	for( c = 0; c < qntdNodo ; c++ )
+	 printf( "Elemento: %d - Conteúdo: %s\n", c, vetorNomes[c] );
+
+}
+
+void menu(){
+	char no1[100], no2[100], no3[100], no4[100];
+	int distTotal = 0;
+	printf("Digite o primeiro no: ");
+	//fgets(no1, 20, stdin);
+	scanf("%s", no1);
+	setbuf(stdin, NULL);
+	
+	printf("Digite o segundo no: ");
+	//fgets(no2, 20, stdin);
+	scanf("%c", no2);
+	setbuf(stdin, NULL);
+	
+	printf("Digite o terceiro no: ");
+	//fgets(no3, 20, stdin);
+	scanf("%s", no3);
+	setbuf(stdin, NULL);
+	
+	printf("Digite o quarto no: ");
+	//fgets(no4, 20, stdin);
+	scanf("%s", no4);
+	setbuf(stdin, NULL);
+	
+	printf("\n\n==============================================");
+	
+	printf("\nVertices\tDistancia \tNos Visitados"); 
+	
+	distTotal += dijkstra(graph, pegarIndice(no1),pegarIndice(no2));
+	distTotal += dijkstra(graph, pegarIndice(no2), pegarIndice(no3));
+	distTotal += dijkstra(graph, pegarIndice(no3), pegarIndice(no4));
+	
+	printf("\n\n==============================================");
+	
+	printf("\nDistancia Total = %d", distTotal);
+	
+	printf("\n==============================================\n\n");
+}
+
+int pegarIndice(char palavra[100]){
+	int count = 0;
+	while(count < qntdNodo){
+		
+		if(!strcmp(vetorNomes[count], palavra)){
+			return count;
+		}
+		
+		count++;
 	}
 }
