@@ -19,32 +19,32 @@ int minDistance(int dist[], bool sptSet[]){
 // Função para imprimir mais curta
 // caminho da origem para j
 // usando matriz pai
-void printPath(int parent[], int j) { 
+void printPath(char **vetorNomes, int parent[], int j) { 
 	// Caso base: se j é fonte
     if (parent[j] == - 1) 
         return; 
   
-    printPath(parent, parent[j]); 
+    printPath(vetorNomes, parent, parent[j]); 
   
-    printf("%d ", j); 
+    printf("%s ", vetorNomes[j]); 
 } 
   
 
 // Uma função utilitária para imprimir
 // a distância construída
 // array 
-int printSolution(int dist[], int n, int parent[], int destino, int src) { 
+int printSolution(char **vetorNomes, int dist[], int n, int parent[], int destino, int src) { 
     //int src = 0; 
     
     //for (destino = 1; destino < V; destino++) 
     //{ 
 	if(dist[destino] < 0 ){
-		printf("\n%d -> %d \t\t nao existe caminho", src, destino);
+		printf("\n%s -> %s \t\t nao existe caminho", vetorNomes[src], vetorNomes[destino]);
 	}else{
 		
-		printf("\n%d -> %d \t\t %d\t\t%d ", 
-		              src, destino, dist[destino], src); 
-		printPath(parent, destino);
+		printf("\n%s -> %s \t\t %d\t\t%s ", 
+		              vetorNomes[src], vetorNomes[destino], dist[destino], vetorNomes[src]); 
+		printPath(vetorNomes, parent, destino);
 		
 	}
        // distTotal += dist[destino];
@@ -55,7 +55,7 @@ int printSolution(int dist[], int n, int parent[], int destino, int src) {
 // caminho mais curto da fonte única
 // algoritmo para um gráfico representado
 // usando representação da matriz de adjacência 
-int dijkstra(int **graph, int origem, int destino) { 
+int dijkstra(char **vetorNomes, int **graph, int origem, int destino) { 
       
 	// A matriz de saída. dist [i]
     // manterá o menor tempo
@@ -126,7 +126,7 @@ int dijkstra(int **graph, int origem, int destino) {
     
 	// imprime o construído
     // matriz de distância
-    printSolution(dist, V, parent, destino, origem);
+    printSolution(vetorNomes, dist, V, parent, destino, origem);
 	
 	if(dist[destino] < 0 ){
 		return 0;

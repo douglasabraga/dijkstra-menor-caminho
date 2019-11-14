@@ -154,9 +154,9 @@ void menu(){
 	
 	printf("\nVertices\tDistancia \tNos Visitados"); 
 	
-	distTotal += dijkstra(graph, pegarIndice(no1), pegarIndice(no2));
-	distTotal += dijkstra(graph, pegarIndice(no2), pegarIndice(no3));
-	distTotal += dijkstra(graph, pegarIndice(no3), pegarIndice(no4));
+	distTotal += dijkstra(vetorNomes, graph, pegarIndice(no1), pegarIndice(no2));
+	distTotal += dijkstra(vetorNomes, graph, pegarIndice(no2), pegarIndice(no3));
+	distTotal += dijkstra(vetorNomes, graph, pegarIndice(no3), pegarIndice(no4));
 	
 	printf("\n\n==============================================");
 	
