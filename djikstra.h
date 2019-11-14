@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define V 6
+int V;
 
 int minDistance(int dist[], bool sptSet[]);
 void printPath(int parent[], int j);
-int printSolution(int dist[], int n, int parent[], int destino, int src);
-int dijkstra(int **graph, int src, int destino);
+int printSolution(int dist[], int n, int parent[], int destino, int origem);
+int dijkstra(int **graph, int origem, int destino);

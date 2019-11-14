@@ -38,9 +38,15 @@ int printSolution(int dist[], int n, int parent[], int destino, int src) {
     
     //for (destino = 1; destino < V; destino++) 
     //{ 
-        printf("\n%d -> %d \t\t %d\t\t%d ", 
-                      src, destino, dist[destino], src); 
-        printPath(parent, destino);
+	if(dist[destino] < 0 ){
+		printf("\n%d -> %d \t\t nao existe caminho", src, destino);
+	}else{
+		
+		printf("\n%d -> %d \t\t %d\t\t%d ", 
+		              src, destino, dist[destino], src); 
+		printPath(parent, destino);
+		
+	}
        // distTotal += dist[destino];
     //} 
 } 
@@ -49,17 +55,17 @@ int printSolution(int dist[], int n, int parent[], int destino, int src) {
 // caminho mais curto da fonte única
 // algoritmo para um gráfico representado
 // usando representação da matriz de adjacência 
-int dijkstra(int **graph, int src, int destino) { 
+int dijkstra(int **graph, int origem, int destino) { 
       
 	// A matriz de saída. dist [i]
     // manterá o menor tempo
-    // distância entre src e i
+    // distância entre origem e i
     int dist[V];  
     
 	// sptSet [i] será verdadeiro se o vértice
     // i está incluído / no mais curto
     // árvore do caminho ou distância mais curta
-    // de src para i é finalizado
+    // de origem para i é finalizado
     bool sptSet[V]; 
     
 	// Matriz pai a ser armazenada
@@ -78,7 +84,7 @@ int dijkstra(int **graph, int src, int destino) {
   
 	// Distância do vértice de origem
     // por si só é sempre 0
-    dist[src] = 0; 
+    dist[origem] = 0; 
     
 	// Encontre o caminho mais curto
     // para allvertices
@@ -87,7 +93,7 @@ int dijkstra(int **graph, int src, int destino) {
         // Escolha a distância mínima
         // vértice do conjunto de
         // vértices ainda não processados.
-        // u é sempre igual a src
+        // u é sempre igual a origem
         // na primeira iteração.
         int u = minDistance(dist, sptSet); 
   
@@ -106,7 +112,7 @@ int dijkstra(int **graph, int src, int destino) {
             // não no sptSet, existe
             // uma aresta de u a v, e
             // peso total do caminho de
-            // src para v através de u é menor
+            // origem para v através de u é menor
             // que o valor atual de
             // dist [v]
             if (!sptSet[v] && graph[u][v] && 
@@ -120,8 +126,11 @@ int dijkstra(int **graph, int src, int destino) {
     
 	// imprime o construído
     // matriz de distância
-    printSolution(dist, V, parent, destino, src);
+    printSolution(dist, V, parent, destino, origem);
 	
+	if(dist[destino] < 0 ){
+		return 0;
+	}
 	return dist[destino];
 } 
   
