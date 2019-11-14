@@ -11,6 +11,7 @@ void lerArquivo(int op);
 void separarDadosDaLinha(char linha[50], int contLinhas);	
 int contaNodos(char linha[50]);
 void menu();
+int pegarIndice(char palavra[100]);
 
 
 int main() {
@@ -108,9 +109,7 @@ int contaNodos(char linha[50]){
 
 		qntdNodo++;
 	}
-	
-	
-	
+
 	vetorNomes = (char **) malloc( qntdNodo * sizeof( char * ) );
 
 	info = strtok(nome, delimitador);
@@ -122,35 +121,56 @@ int contaNodos(char linha[50]){
 	}
 	
 	for( c = 0; c < qntdNodo ; c++ )
-{
- printf( "Elemento: %d - Conteúdo: %s\n", c, vetorNomes[c] );
-}
+	 printf( "Elemento: %d - Conteúdo: %s\n", c, vetorNomes[c] );
 
-
-	
 }
 
 void menu(){
-	int no1, no2, no3, no4, distTotal = 0;
+	char no1[100], no2[100], no3[100], no4[100];
+	int distTotal = 0;
 	printf("Digite o primeiro no: ");
-	scanf("%d", &no1);
+	//fgets(no1, 20, stdin);
+	scanf("%s", no1);
+	setbuf(stdin, NULL);
+	
 	printf("Digite o segundo no: ");
-	scanf("%d", &no2);
+	//fgets(no2, 20, stdin);
+	scanf("%c", no2);
+	setbuf(stdin, NULL);
+	
 	printf("Digite o terceiro no: ");
-	scanf("%d", &no3);
+	//fgets(no3, 20, stdin);
+	scanf("%s", no3);
+	setbuf(stdin, NULL);
+	
 	printf("Digite o quarto no: ");
-	scanf("%d", &no4);
+	//fgets(no4, 20, stdin);
+	scanf("%s", no4);
+	setbuf(stdin, NULL);
+	
 	printf("\n\n==============================================");
 	
 	printf("\nVertices\tDistancia \tNos Visitados"); 
 	
-	distTotal += dijkstra(graph, no1, no2);
-	distTotal += dijkstra(graph, no2, no3);
-	distTotal += dijkstra(graph, no3, no4);
+	distTotal += dijkstra(graph, pegarIndice(no1),pegarIndice(no2));
+	distTotal += dijkstra(graph, pegarIndice(no2), pegarIndice(no3));
+	distTotal += dijkstra(graph, pegarIndice(no3), pegarIndice(no4));
 	
 	printf("\n\n==============================================");
 	
 	printf("\nDistancia Total = %d", distTotal);
 	
 	printf("\n==============================================\n\n");
+}
+
+int pegarIndice(char palavra[100]){
+	int count = 0;
+	while(count < qntdNodo){
+		
+		if(!strcmp(vetorNomes[count], palavra)){
+			return count;
+		}
+		
+		count++;
+	}
 }
