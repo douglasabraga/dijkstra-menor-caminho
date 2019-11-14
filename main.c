@@ -1,4 +1,4 @@
-
+#include <locale.h>
 #include "djikstra.h"
 
 int qntdNodo = 0;
@@ -7,14 +7,14 @@ char **vetorNomes;
 
 int** alocarMatriz(int linhas, int colunas);
 void lerArquivo(int op);
-void separarDadosDaLinha(char linha[50], int contLinhas);	
-int contaNodos(char linha[50]);
+void separarDadosDaLinha(char linha[1000], int contLinhas);	
+int contaNodos(char linha[1000]);
 int pegarIndice(char palavra[100]);
 void menu();
 
 
 int main() {
-	
+	setlocale(LC_ALL, "Portuguese_Brazil.1252");
 	// O 2 é passado como parâmetro para
 	// a contagem de nós
 	lerArquivo(2);
@@ -45,7 +45,7 @@ return m; //Retorna o Ponteiro para a Matriz Alocada
 }
 
 void lerArquivo(int op){
-	char linha[50]; // string armazenara a linha
+	char linha[1000]; // string armazenara a linha
     FILE *arq;
 	int contLinhas = 0;
     arq = fopen("ProblemaSlideCaminhoMínimo.csv","r"); // Abre o arquivo
@@ -70,7 +70,7 @@ void lerArquivo(int op){
 }
 
 
-void separarDadosDaLinha(char linha[50], int contLinhas){
+void separarDadosDaLinha(char linha[1000], int contLinhas){
 	char delimitador[] = ";"; // Caracter delimitador
 	
     char *info; // Ponteiro para armazenar as informacoes
@@ -94,7 +94,7 @@ void separarDadosDaLinha(char linha[50], int contLinhas){
 }
 
 
-int contaNodos(char linha[50]){
+int contaNodos(char linha[1000]){
 	char delimitador[] = ";"; // Caracter delimitador
     char *info; // Ponteiro para armazenar as informacoes
     int c = 0, aux;
@@ -131,23 +131,23 @@ void menu(){
 	char no1[100], no2[100], no3[100], no4[100];
 	int distTotal = 0;
 	printf("Digite o primeiro no: ");
-	//fgets(no1, 20, stdin);
-	scanf("%s", no1);
+	gets(no1);
+	//scanf("%s", no1);
 	setbuf(stdin, NULL);
 	
 	printf("Digite o segundo no: ");
-	//fgets(no2, 20, stdin);
-	scanf("%s", no2);
+	gets(no2);
+	//scanf("%s", no2);
 	setbuf(stdin, NULL);
 	
 	printf("Digite o terceiro no: ");
-	//fgets(no3, 20, stdin);
-	scanf("%s", no3);
+	gets(no3);
+	//scanf("%s", no3);
 	setbuf(stdin, NULL);
 	
 	printf("Digite o quarto no: ");
-	//fgets(no4, 20, stdin);
-	scanf("%s", no4);
+	gets(no4);
+	//scanf("%s", no4);
 	setbuf(stdin, NULL);
 	
 	printf("\n\n==============================================");
