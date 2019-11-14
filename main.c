@@ -2,15 +2,15 @@
 #include "djikstra.h"
 
 int qntdNodo = 0;
-int **graph;
+int **grafo;
 char **vetorNomes;
 
-int** alocarMatriz(int Linhas, int Colunas);
+int** alocarMatriz(int linhas, int colunas);
 void lerArquivo(int op);
 void separarDadosDaLinha(char linha[50], int contLinhas);	
 int contaNodos(char linha[50]);
-void menu();
 int pegarIndice(char palavra[100]);
+void menu();
 
 
 int main() {
@@ -21,7 +21,7 @@ int main() {
 
 	V = qntdNodo;
 
-    graph = alocarMatriz(qntdNodo, qntdNodo);
+    grafo = alocarMatriz(qntdNodo, qntdNodo);
 	
 	lerArquivo(1);
 	menu();
@@ -29,15 +29,15 @@ int main() {
     return 0; 
 } 
 
-int** alocarMatriz(int Linhas, int Colunas){ //Recebe a quantidade de Linhas e Colunas como Parâmetro
+int** alocarMatriz(int linhas, int colunas){ //Recebe a quantidade de linhas e colunas como Parâmetro
  
   int i,j; //Variáveis Auxiliares
  
-  int **m = (int**)malloc(Linhas * sizeof(int*)); //Aloca um Vetor de Ponteiros
+  int **m = (int**)malloc(linhas * sizeof(int*)); //Aloca um Vetor de Ponteiros
  
-  for (i = 0; i < Linhas; i++){ //Percorre as linhas do Vetor de Ponteiros
-       m[i] = (int*) malloc(Colunas * sizeof(int)); //Aloca um Vetor de Inteiros para cada posição do Vetor de Ponteiros.
-       for (j = 0; j < Colunas; j++){ //Percorre o Vetor de Inteiros atual.
+  for (i = 0; i < linhas; i++){ //Percorre as linhas do Vetor de Ponteiros
+       m[i] = (int*) malloc(colunas * sizeof(int)); //Aloca um Vetor de Inteiros para cada posição do Vetor de Ponteiros.
+       for (j = 0; j < colunas; j++){ //Percorre o Vetor de Inteiros atual.
             m[i][j] = 0; //Inicializa com 0.
        }
   }
@@ -86,7 +86,7 @@ void separarDadosDaLinha(char linha[50], int contLinhas){
 		if(contColunas != 0){
 			info = strtok(NULL, delimitador);
 			peso = atoi(info); // Copia info para peso
-			graph[contLinhas][contColunas-1] = peso;
+			grafo[contLinhas][contColunas-1] = peso;
 			
 		}
 		contColunas++;
@@ -97,7 +97,7 @@ void separarDadosDaLinha(char linha[50], int contLinhas){
 int contaNodos(char linha[50]){
 	char delimitador[] = ";"; // Caracter delimitador
     char *info; // Ponteiro para armazenar as informacoes
-    int c = 0;
+    int c = 0, aux;
     char nome[50];
     strcpy(nome, linha);
 	
@@ -117,13 +117,13 @@ int contaNodos(char linha[50]){
 	info = strtok(nome, delimitador);
 	
 	for(c = 0; c < qntdNodo; c++){ //Loop para percorrer todos os índices do seu "vetor"
+		//Tratando o \n
+		aux = strstr(info, "\n") - info;
+		if(aux > 0) info[aux] = '\0';
 		
     	vetorNomes[c] = strdup(info);
     	info = strtok(NULL, delimitador);
 	}
-	
-/*	for( c = 0; c < qntdNodo ; c++ )
-	 printf( "Elemento: %d - Conteúdo: %s\n", c, vetorNomes[c] );*/
 
 }
 
@@ -154,9 +154,9 @@ void menu(){
 	
 	printf("\nVertices\tDistancia \tNos Visitados"); 
 	
-	distTotal += dijkstra(vetorNomes, graph, pegarIndice(no1), pegarIndice(no2));
-	distTotal += dijkstra(vetorNomes, graph, pegarIndice(no2), pegarIndice(no3));
-	distTotal += dijkstra(vetorNomes, graph, pegarIndice(no3), pegarIndice(no4));
+	distTotal += dijkstra(vetorNomes, grafo, pegarIndice(no1), pegarIndice(no2));
+	distTotal += dijkstra(vetorNomes, grafo, pegarIndice(no2), pegarIndice(no3));
+	distTotal += dijkstra(vetorNomes, grafo, pegarIndice(no3), pegarIndice(no4));
 	
 	printf("\n\n==============================================");
 	
